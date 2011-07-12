@@ -1,0 +1,9 @@
+{application,emongrel2,
+             [{description,[]},
+              {vsn,"0.0.1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {mod,{emongrel2_app,[]}},
+              {env,[]},
+              {modules,[em2_gen_receive,em2_receiver,em2_request,em2_response,
+                        em2_sender,emongrel2_app,emongrel2_sup]}]}.
