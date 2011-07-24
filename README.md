@@ -9,10 +9,10 @@ Rationale
 Mongrel2 http://mongrel2.org is an innovative web server that make use of
 zeromq http://zeromq.org sockets to enable communication between the webserver
 and the application server.
-This library provides all what is needed to build mongrel2 handlers using
-erlang.
-The library also provides all what is need in order to build a web server
-compatible with mongrel2.
+This library provides helpers that make simple the creation of mongrel2 handlers
+written in erlang.
+erlang.  The library also provides helpers that make simple the creation of
+mongrel2 compatible servers.
 
 Documentation
 ---------
