@@ -2,20 +2,33 @@
 
 -export([parse/1,
          send/2,
+         build/3,
          recv/1]).
 
 %% @doc parse a response
 -spec parse(Response::binary()) -> {Identifier::binary(),
-                                    ConnectionId::binary(),
+                                    ConnectionIds::list(binary()),
                                     Body::binary()}.
 parse(Response) ->
-    [Identifier, Rest] = binary:split(Response, <<$ >>),
-    [Size, More] = binary:split(Rest, <<$: >>),
-    SizeI = list_to_integer(binary_to_list(Size)),
-    <<ConnectionId:SizeI/binary, $,, $ , Body/binary>> = More,
-    {Identifier, ConnectionId, Body}.
+    [ServerId, Rest] = binary:split(Response, <<$ >>),
+    {ConnectionIds, <<$ , Body/binary>>} = netstring:decode(Rest),
+    {ServerId,
+     binary:split(ConnectionIds, <<$ >>, [global]),
+     Body}.
 
-%% @doc receive a response from receiver socket
+%% @doc build a response from its components
+-spec build(ServerId::binary(),
+            ConnectionIds::list(binary()),
+            Body::binary()) ->
+    binary().
+build(ServerId, ConnectionIds, Body) ->
+    list_to_binary([ServerId,
+                    $ ,
+                    netstring:encode(join(ConnectionIds)),
+                    $ ,
+                    Body]).
+
+%% @doc send a response from responder socket
 -spec send(Socket::erlzmq:erlzmq_socket(), Response::binary()) ->
     ok | erlzmq:erlzmq_error().
 send(Socket, Response) ->
@@ -26,3 +39,8 @@ send(Socket, Response) ->
     {ok, Response::binary()} | erlzmq:erlzmq_error().
 recv(Socket) ->
     erlzmq:recv(Socket).
+
+join([H]) ->
+    H;
+join([H | T]) ->
+    list_to_binary([H | [[$ , X] || X <- T]]).
