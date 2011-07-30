@@ -5,7 +5,7 @@
 %%
 %% this server issues a request in an infinite loop and echoes back the received
 %% responses.
-%% this server should work with any handler configured to handle request from a
+%% this server should work with any handler configured to handle requests from a
 %% mongrel2 server configured accordingly to configuration file provided in this
 %% directory
 
