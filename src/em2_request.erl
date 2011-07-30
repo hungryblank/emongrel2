@@ -3,6 +3,7 @@
 -include("emongrel2.hrl").
 
 -export([build/5,
+         build/1,
          send/2,
          parse/1,
          recv/1]).
@@ -24,12 +25,17 @@ build(ServerId, ConnectionId, Path, Headers, Body) ->
                     netstring:encode(Headers),
                     netstring:encode(Body)]).
 
+%% @doc build a request from a record
+-spec build(#em2_request{}) -> Request :: binary().
+build(#em2_request{server_id = ServerId,
+                   connection_id = ConnectionId,
+                   path = Path,
+                   headers = Headers,
+                   body = Body}) ->
+build(ServerId, ConnectionId, Path, Headers, Body).
+
 -spec parse(Data::binary()) ->
-    {ServerId::binary(),
-     ConnectionId::binary(),
-     Path::binary(),
-     Headers::binary(),
-     Body::binary()}.
+    #em2_request{}.
 parse(Data) ->
     [NetString, Path, ConnectionId, ServerId] = split(Data, 3, []),
     {Header, Rest} = netstring:decode(NetString),

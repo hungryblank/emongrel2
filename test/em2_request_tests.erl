@@ -23,6 +23,14 @@ build_test() ->
                                 Body),
     ?assertEqual(?REQUEST, Request).
 
+build_from_record_test() ->
+    Request = #em2_request{server_id = ?SERVER_ID,
+                           connection_id = ?CONNECTION_ID,
+                           path = ?PATH,
+                           headers = ?HEADERS,
+                           body = ?BODY},
+    ?assertEqual(?REQUEST, em2_request:build(Request)).
+
 parse_test_() ->
     Request = em2_request:parse(?REQUEST),
     [?_assertEqual(?SERVER_ID, Request#em2_request.server_id),
