@@ -29,12 +29,15 @@ emongrel2 provides 3 erlang modules
 - em2_sockets functions to safely start the zeromq sockets used by mongrel2
   handler and server
 
+Examples
+---------
+
+Examples of usage of this library are provided in the example directory
+
 TODO
 ---------
 
-- Provide example for builing erlang handlers
-- Provide examples for builing erlang mongrel2 server and illustrate how to
-  connect it with python/ruby handlers available on github
+- Provide support for tnetstring protocol
 
 Copyright
 ---------
